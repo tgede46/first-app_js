@@ -54,7 +54,7 @@ const Questions = [
   {
     question: 'A quel pays rattachez-vous la ville de Mossoul ? ',
     answers: ['Quatar', 'Iran', 'Yemen', 'Irak'],
-    correct: 'Irak', },
+    correct: 'Irak', }
 ]
 function startQuiz(event){
   console.log(event);
