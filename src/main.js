@@ -14,48 +14,47 @@ const Questions = [
     answers: [' Tchad et Lybie', 'Japoon et Chine', 'France et Italie '],
     correct: ' Tchad et Lybie',
   },
-  // {
-  //   question: 'Quel est plus grand lac d’Afrique ? ',
-  //   answers: [ 'Lac Togo', 'Lac Victoria', 'Lac tanganigare'],
-  //   correct: 'Lac Victoria',
-  // },
-  // {
-  //   question: "Combien pesait le premier ordinateur au monde?",
-  //   answers: ['10 Tonnes', '1 kg', '30 Tonnes'],
-  //   correct:'30 Tonnes',
-  // },
-  // {
-  //   question: 'Quel océan détient le plus d’eau ? ?',
-  //   answers: ['Atlantique', 'Oceanie', 'Pacifique '],
-  //   correct: 'Pacifique ',
-  // },
-  // {
-  //   question:'A quel héros de l’Ouest rattachez-vous Jolly Jumper ?  ?',
-  //   answers: ['Socrate', 'Lucky Luke', 'Joe'],
-  //   correct: 'Lucky Luke',
-  // },
-  // {
-  //   question: " Quel est la capitale de la Suède ",
-  //   answers: [' Stockholm', 'Oslo', 'Helsinki'],
-  //   correct: ' Stockholm',
-  // },
-  // {
-  //   question: 'Quel écrivain nous a laissé le roman : L’enfant et la rivière ?  ' ,
-  //   answers: ['Hugo ', 'Henri Bosco', 'Voltaire'],
-  //   correct: 'Henri Bosco',
-  // },
-  // {
-  //   question:
+  {
+    question: 'Quel est plus grand lac d’Afrique ? ',
+    answers: [ 'Lac Togo', 'Lac Victoria', 'Lac tanganigare'],
+    correct: 'Lac Victoria',
+  },
+  {
+    question: "Combien pesait le premier ordinateur au monde?",
+    answers: ['10 Tonnes', '1 kg', '30 Tonnes'],
+    correct:'30 Tonnes',
+  },
+  {
+    question: 'Quel océan détient le plus d’eau ? ?',
+    answers: ['Atlantique', 'Oceanie', 'Pacifique '],
+    correct: 'Pacifique ',
+  },
+  {
+    question:'A quel héros de l’Ouest rattachez-vous Jolly Jumper ?  ?',
+    answers: ['Socrate', 'Lucky Luke', 'Joe'],
+    correct: 'Lucky Luke',
+  },
+  {
+    question: " Quel est la capitale de la Suède ",
+    answers: [' Stockholm', 'Oslo', 'Helsinki'],
+    correct: ' Stockholm',
+  },
+  {
+    question: 'Quel écrivain nous a laissé le roman : L’enfant et la rivière ?  ' ,
+    answers: ['Hugo ', 'Henri Bosco', 'Voltaire'],
+    correct: 'Henri Bosco',
+  },
+  {
+    question:
 
-  //     'Dans quel pays se trouve la ville de Fès ?  ?',
-  //   answers: ['Egypte', 'Tunisie', 'Maroc', 'Algerie'],
-  //   correct: 'Maroc',
-  // },
-  // {
-  //   question: 'A quel pays rattachez-vous la ville de Mossoul ? ',
-  //   answers: ['Quatar', 'Iran', 'Yemen', 'Irak'],
-  //   correct: 'Irak',
-  // },
+      'Dans quel pays se trouve la ville de Fès ?  ?',
+    answers: ['Egypte', 'Tunisie', 'Maroc', 'Algerie'],
+    correct: 'Maroc',
+  },
+  {
+    question: 'A quel pays rattachez-vous la ville de Mossoul ? ',
+    answers: ['Quatar', 'Iran', 'Yemen', 'Irak'],
+    correct: 'Irak', },
 ]
 function startQuiz(event){
   console.log(event);
