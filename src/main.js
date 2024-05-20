@@ -1,7 +1,3 @@
-const app = document.querySelector("#app");
-const startButton = document.querySelector("#start");
-
-startButton.addEventListener("click",startQuiz);
 const Questions = [
   {
     question: ' Quel problème du millénaire avait résolu le Russe Grigoriy Perelman ?  ',
@@ -56,153 +52,198 @@ const Questions = [
     answers: ['Quatar', 'Iran', 'Yemen', 'Irak'],
     correct: 'Irak', }
 ]
-function startQuiz(event){
-  console.log(event);
-  let currentQuestion=0;
-  let score=0;
-   
-  clean();
-   displayQuestion(currentQuestion);
-// pour suprimer le start
-  function clean(){
-    while(app.firstElementChild){
+
+
+const TIMEOUT = 4000;
+
+const app = document.querySelector("#app");
+
+const startButton = document.querySelector("#start");
+
+startButton.addEventListener("click", startQuiz);
+
+function startQuiz(event) {
+  event.stopPropagation();
+  let currentQuestion = 0;
+  let score = 0;
+
+  displayQuestion(currentQuestion);
+
+  function clean() {
+    while (app.firstElementChild) {
       app.firstElementChild.remove();
     }
-    const progress = displyProgressBar(Questions.length,currentQuestion);
+    const progress = getProgressBar(Questions.length, currentQuestion);
     app.appendChild(progress);
-   
   }
-  function displayQuestion(index){
+
+  function displayQuestion(index) {
     clean();
     const question = Questions[index];
 
-    if(!question){
-      //fin de question
+    if (!question) {
       displayFinishMessage();
       return;
     }
+
     const title = getTitleElement(question.question);
     app.appendChild(title);
     const answersDiv = createAnswers(question.answers);
     app.appendChild(answersDiv);
 
-    const submitButton=getSubmitButton();
+    const submitButton = getSubmitButton();
 
-    submitButton.addEventListener("click",subimt)
+    submitButton.addEventListener("click", submit);
+
     app.appendChild(submitButton);
   }
-  
-  function displayFinishMessage(){
-    const h1 = document.createElement("h1")
-    h1.innerText="bravo!! vous avez termine le quiz."
-    const p = document.createElement("p");
-    p.innerText=`vous avez eu un score de ${score} sur ${Questions.length} point `;
-    app.appendChild(h1)
-    app.appendChild(p)
-  }
-  function subimt(){
-    const selectedAnswers = app.querySelector('input[name="answer" ]:checked')
-    const value = selectedAnswers.value;
-    const question = Questions[currentQuestion]
-    const isCorrect = question.correct === value;
-    alert(`Submit ${isCorrect? "Correct":"Incorrect"}`);
 
-    if (isCorrect){
+  function displayFinishMessage() {
+    const h1 = document.createElement("h1");
+    h1.innerText = "Bravo ! Tu as terminé le quiz.";
+    const p = document.createElement("p");
+    p.innerText = `Tu as eu ${score} sur ${Questions.length} point !`;
+
+    app.appendChild(h1);
+    app.appendChild(p);
+  }
+
+  function submit() {
+    const selectedAnswer = app.querySelector('input[name="answer"]:checked');
+
+    disableAllAnswers();
+
+    const value = selectedAnswer.value;
+
+    const question = Questions[currentQuestion];
+
+    const isCorrect = question.correct === value;
+
+    if (isCorrect) {
       score++;
     }
 
-    displayNextQuestionButton();
-
-    showFeedback(isCorrect,question.correct,value);
-    setTimeout(()=>{
+    showFeedback(isCorrect, question.correct, value);
+    displayNextQuestionButton(() => {
       currentQuestion++;
-      displayQuestion(currentQuestion)
+      displayQuestion(currentQuestion);
+    });
 
-    },4000)
-
-    function displayNextQuestionButton(){
-      let timeout = 4000;
-      let interval;
-      app.querySelector("button").remove();
-      const nextbutton = document.createElement("button")
-
-      app.appendChild(nextbutton);
-
-      nextbutton.innerText=`Next (${timeout/1000}s)`
-        interval= setInterval(()=>{
-        timeout-=1000;
-        nextbutton.innerText = `Next(${timeout/1000}s)`
-      },1000);
-
-    }
-
+    const feedback = getFeedbackMessage(isCorrect, question.correct);
+    app.appendChild(feedback);
   }
-  
-  function showFeedback(isCorrect, correct, answer){
-    const correctAnswerId = formatId(correct);
-    const correctElement = document.querySelector(`label[for="${correctAnswerId}"]`);
-    
-    const selectedAnswerId = formatId(answer);
-    const selectedElement = document.querySelector(`label[for="${selectedAnswerId}"]`);
 
-    if (isCorrect){
-      selectedElement.classList.add("correct");
-    } else {
-      selectedElement.classList.add("incorrect");
-      correctElement.classList.add("correct");
-    }
-
-    
-}
-
-
-  // c'est une fonction qui definie la reponse 
-  function createAnswers(answers){
-    const answersDiv =document.createElement("div");
+  function createAnswers(answers) {
+    const answersDiv = document.createElement("div");
 
     answersDiv.classList.add("answers");
-    for(const answer of answers){
-      const label = getAnswerElement(answer)
+
+    for (const answer of answers) {
+      const label = getAnswerElement(answer);
       answersDiv.appendChild(label);
     }
+
     return answersDiv;
   }
 }
 
-function getTitleElement(text){
+function getTitleElement(text) {
   const title = document.createElement("h3");
   title.innerText = text;
   return title;
 }
 
-function formatId(text){
-  return  text.replaceAll(" ", "-").toLowerCase();
+function formatId(text) {
+  return text.replaceAll(" ", "-").replaceAll('"', "'").toLowerCase();
 }
-function getAnswerElement(text){
+
+function getAnswerElement(text) {
   const label = document.createElement("label");
-  label.innerText = text; // Ici, utilisez label au lieu de answer
+  label.innerText = text;
   const input = document.createElement("input");
-  const id = formatId(text); // Assurez-vous également que toLowerCase est correctement orthographié
-  input.id=id;
-  label.htmlFor=id; // htmlfor doit être écrit comme htmlFor
-  input.setAttribute("type","radio");
-  input.setAttribute("name","answer")
-  input.setAttribute("value",text)
+  const id = formatId(text);
+  input.id = id;
+  label.htmlFor = id;
+  input.setAttribute("type", "radio");
+  input.setAttribute("name", "answer");
+  input.setAttribute("value", text);
   label.appendChild(input);
   return label;
 }
 
-function getSubmitButton(){
-  
-  const submitButton=document.createElement("button")
-  submitButton.innerText="Submit";
-  app.appendChild(submitButton);
+function getSubmitButton() {
+  const submitButton = document.createElement("button");
+  submitButton.innerText = "Submit";
   return submitButton;
 }
 
-function displyProgressBar(max,value){
-  const progress =document.createElement("progress");
-  progress.setAttribute("max",max);
-  progress.setAttribute("value",value)
+function showFeedback(isCorrect, correct, answer) {
+  const correctAnswerId = formatId(correct);
+  const correctElement = document.querySelector(
+    `label[for="${correctAnswerId}"]`
+  );
+
+  const selectedAnswerId = formatId(answer);
+  const selectedElement = document.querySelector(
+    `label[for="${selectedAnswerId}"]`
+  );
+
+  correctElement.classList.add("correct");
+  selectedElement.classList.add(isCorrect ? "correct" : "incorrect");
+}
+
+function getFeedbackMessage(isCorrect, correct) {
+  const paragraph = document.createElement("p");
+  paragraph.innerText = isCorrect
+    ? "Bravo ! Tu as eu la bonne réponse"
+    : `Désolé... mais la bonne réponse était ${correct}`;
+
+  return paragraph;
+}
+
+function getProgressBar(max, value) {
+  const progress = document.createElement("progress");
+  progress.setAttribute("max", max);
+  progress.setAttribute("value", value);
   return progress;
 }
+
+function displayNextQuestionButton(callback) {
+  let remainingTimeout = TIMEOUT;
+
+  app.querySelector("button").remove();
+
+  const getButtonText = () => `Next (${remainingTimeout / 1000}s)`;
+
+  const nextButton = document.createElement("button");
+  nextButton.innerText = getButtonText();
+  app.appendChild(nextButton);
+
+  const interval = setInterval(() => {
+    remainingTimeout -= 1000;
+    nextButton.innerText = getButtonText();
+  }, 1000);
+
+  const timeout = setTimeout(() => {
+    handleNextQuestion();
+  }, TIMEOUT);
+
+  const handleNextQuestion = () => {
+    clearInterval(interval);
+    clearTimeout(timeout);
+    callback();
+  };
+
+  nextButton.addEventListener("click", () => {
+    handleNextQuestion();
+  });
+}
+
+function disableAllAnswers() {
+  const radioInputs = document.querySelectorAll('input[type="radio"]');
+
+  for (const radio of radioInputs) {
+    radio.disabled = true;
+  }
+}
+
